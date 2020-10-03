@@ -1,0 +1,43 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+@import "~font-awesome/scss/font-awesome.scss";
+@import "~flatpickr/dist/flatpickr.min.css";
+
+.action {
+    font-size: 20px;
+}
+
+.btn-remove {
+    border: none;
+    margin-left: 10px;
+    color: red;
+    padding: 0;
+    background: transparent;
+    font-size: 20px;
+    &:hover {
+        color: darken(red, 10%);
+    }
+    &:focus {
+        outline: none;
+    }
+}
+
+.form-remove {
+    display: inline;
+}
+
+.app-invalid-feedback.invalid-feedback {
+    display: block;
+}
+
+.chart {
+    max-width: 750px;
+    margin-bottom: 30px;
+}
