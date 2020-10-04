@@ -24,9 +24,9 @@ Route::post('workers/{worker}/update',
 Route::post('workers/{worker}/destroy',
     'WorkersController@destroy')->middleware('auth')->name('workers.destroy');
 
-Route::get('login/github', 'Auth\LoginController@redirectToProvider');
-Route::get('login/github/callback',
-    'Auth\LoginController@handleProviderCallback');
+Route::get('/login/{network}',
+    'Auth\NetworkController@redirect')->name('login.network');
+Route::get('/login/{network}/callback', 'Auth\NetworkController@callback');
 
 Auth::routes();
 

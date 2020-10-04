@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -16,7 +16,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
     ];
 
     /**
@@ -25,7 +27,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -36,4 +39,37 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function networks()
+    {
+        return $this->hasMany(Network::class);
+    }
+
+    public static function registerByNetwork(string $network, string $identity)
+    {
+        $user = static::create([
+            'name' => $identity,
+            'email' => null,
+            'password' => null,
+            'verify_token' => null,
+        ]);
+        $user->networks()->create([
+            'network' => $network,
+            'identity' => $identity,
+        ]);
+
+        return $user;
+    }
+
+    public function scopeByNetwork(
+        Builder $query,
+        string $network,
+        string $identity
+    ) {
+        return $query->whereHas('networks',
+            function (Builder $query) use ($network, $identity) {
+                $query->where('network', $network)->where('identity',
+                    $identity);
+            });
+    }
 }
